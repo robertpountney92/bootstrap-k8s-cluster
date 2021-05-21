@@ -165,6 +165,6 @@ If you created firewall rule via `gcloud`
 
     gcloud compute firewall-rules delete bootstrap-k8s-cluster-allow-nginx-service -q
 
-Clean up resources managed by `Terraform`
+Clean up resources managed by `terraform`
 
     terraform destroy -auto-approve
