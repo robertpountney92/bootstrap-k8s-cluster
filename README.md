@@ -158,10 +158,10 @@ Make an HTTP request using the external IP address and the nginx node port:
 
 ## Clean up
 
-If you created firewall rule via gcloud then
+If you created firewall rule via `gcloud`
 
     gcloud compute firewall-rules delete bootstrap-k8s-cluster-allow-nginx-service -q
 
-Clean up resources managed by Terraform
+Clean up resources managed by `Terraform`
 
     terraform destroy -auto-approve
