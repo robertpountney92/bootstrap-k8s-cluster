@@ -1,5 +1,8 @@
 # bootstrap-k8s-cluster
 
+This repository automates the bootstraping of a Kubernetes cluster from scratch using Terraform.
+
+
 ## Prerequisites 
 - Install `gcloud` CLI 
 - Install `terraform` 
