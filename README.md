@@ -140,7 +140,8 @@ Retrieve the node port assigned to the nginx service:
 
     NODE_PORT=$(kubectl get svc nginx \
     --output=jsonpath='{range .spec.ports[0]}{.nodePort}')
-    Create a firewall rule that allows remote access to the nginx node port:
+    
+Create a firewall rule that allows remote access to the nginx node port:
 
     gcloud compute firewall-rules create bootstrap-k8s-cluster-allow-nginx-service \
     --allow=tcp:${NODE_PORT} \
@@ -154,3 +155,13 @@ Retrieve the external IP address of a worker instance:
 Make an HTTP request using the external IP address and the nginx node port:
 
     curl -I http://${EXTERNAL_IP}:${NODE_PORT}
+
+## Clean up
+
+If you created firewall rule via gcloud then
+
+    gcloud compute firewall-rules delete bootstrap-k8s-cluster-allow-nginx-service -q
+
+Clean up resources managed by Terraform
+
+    terraform destroy -auto-approve

@@ -12,10 +12,10 @@ resource "google_compute_subnetwork" "k8s_subnetwork" {
 }
 
 resource "google_compute_route" "k8s_route" {
-  count       = var.node_count
+  count = var.node_count
 
-  name        = "kubernetes-route-10-200-${count.index}-0-24" 
-  network     = google_compute_network.k8s_vpc_network.name
+  name              = "kubernetes-route-10-200-${count.index}-0-24"
+  network           = google_compute_network.k8s_vpc_network.name
   next_hop_instance = google_compute_instance.k8s-worker-node-pool[count.index].self_link
-  dest_range  = "10.200.${count.index}.0/24"
+  dest_range        = "10.200.${count.index}.0/24"
 }

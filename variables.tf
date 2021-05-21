@@ -30,13 +30,13 @@ variable "cluster_name" {
 
 variable "gcp_instance_username" {
   description = "Username used to SSH into GCP instances"
-  type = string 
+  type        = string
 }
 
 variable "private_key_location" {
   # Note: set up SSH keys to instances using `gcloud compute ssh <instance>`
   description = "Location of private key used to SSH into GCP instances"
-  type = string
+  type        = string
 }
 
 variable "country" {

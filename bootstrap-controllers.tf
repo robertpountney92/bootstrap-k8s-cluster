@@ -2,9 +2,9 @@
 # To be perfored on all controller nodes
 resource "null_resource" "bootstrap_controllers" {
   count = var.node_count
-  depends_on = [ 
-    null_resource.transfer_certs_and_keys, 
-    null_resource.transfer_kubeconfig_files 
+  depends_on = [
+    null_resource.transfer_certs_and_keys,
+    null_resource.transfer_kubeconfig_files
   ]
   triggers = {
     time = timestamp()
@@ -14,10 +14,10 @@ resource "null_resource" "bootstrap_controllers" {
     #   ])
   }
 
-  connection {  
-    user     = var.gcp_instance_username
+  connection {
+    user        = var.gcp_instance_username
     private_key = file(var.private_key_location)
-    host = google_compute_instance.k8s-controller-node-pool[count.index].network_interface.0.access_config.0.nat_ip
+    host        = google_compute_instance.k8s-controller-node-pool[count.index].network_interface.0.access_config.0.nat_ip
   }
 
   provisioner "file" {
@@ -26,8 +26,8 @@ resource "null_resource" "bootstrap_controllers" {
   }
 
   provisioner "file" {
-    content      = templatefile("${path.module}/templates/bootstrap-controllers.sh.tpl", {
-        KUBERNETES_PUBLIC_ADDRESS = google_compute_address.k8s_static_ip_address.address
+    content = templatefile("${path.module}/templates/bootstrap-controllers.sh.tpl", {
+      KUBERNETES_PUBLIC_ADDRESS = google_compute_address.k8s_static_ip_address.address
     })
     destination = "~/bootstrap-controllers.sh"
   }
@@ -48,15 +48,15 @@ resource "null_resource" "bootstrap_controllers" {
 # Bootstrap RBAC
 # RBAC only needs to be configured on one controller node
 resource "null_resource" "bootstrap_rbac" {
-  depends_on = [ null_resource.bootstrap_controllers ]
+  depends_on = [null_resource.bootstrap_controllers]
   triggers = {
     time = timestamp()
   }
 
-  connection {  
-    user     = var.gcp_instance_username
+  connection {
+    user        = var.gcp_instance_username
     private_key = file(var.private_key_location)
-    host = google_compute_instance.k8s-controller-node-pool[0].network_interface.0.access_config.0.nat_ip
+    host        = google_compute_instance.k8s-controller-node-pool[0].network_interface.0.access_config.0.nat_ip
   }
 
   provisioner "file" {

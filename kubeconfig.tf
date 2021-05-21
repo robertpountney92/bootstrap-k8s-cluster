@@ -1,7 +1,7 @@
 # Copy the appropriate kubeconfig files to worker and controller nodes
 resource "null_resource" "transfer_kubeconfig_files" {
-  count = var.node_count
-  depends_on = [ null_resource.transfer_certs_and_keys ]
+  count      = var.node_count
+  depends_on = [null_resource.transfer_certs_and_keys]
   triggers = {
     # This will need to be changed, bettter to check if change to any resources 
     # Should concatenate all resources together with join() command and "," to check the diff

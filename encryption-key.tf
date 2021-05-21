@@ -1,9 +1,9 @@
 # Copy the encyption key to controller nodes
 resource "null_resource" "transfer_encyption_key" {
   count = var.node_count
-  depends_on = [ 
-    null_resource.transfer_certs_and_keys, 
-    null_resource.transfer_kubeconfig_files 
+  depends_on = [
+    null_resource.transfer_certs_and_keys,
+    null_resource.transfer_kubeconfig_files
   ]
   triggers = {
     time = timestamp()

@@ -1,7 +1,7 @@
 resource "google_compute_http_health_check" "kubernetes" {
   name         = "kubernetes-health-check"
   request_path = "/healthz"
-  host = "kubernetes.default.svc.cluster.local"
+  host         = "kubernetes.default.svc.cluster.local"
 }
 
 
@@ -28,9 +28,9 @@ resource "google_compute_target_pool" "kubernetes-target-pool" {
 }
 
 resource "google_compute_forwarding_rule" "kubernetes-forwarding-rule" {
-  name                  = "bootstrap-k8s-forwarding-rule"
-  region                = data.google_client_config.current.region
-  port_range            = 6443
-  ip_address            = google_compute_address.k8s_static_ip_address.address
-  target                = google_compute_target_pool.kubernetes-target-pool.id 
+  name       = "bootstrap-k8s-forwarding-rule"
+  region     = data.google_client_config.current.region
+  port_range = 6443
+  ip_address = google_compute_address.k8s_static_ip_address.address
+  target     = google_compute_target_pool.kubernetes-target-pool.id
 }

@@ -9,17 +9,17 @@ resource "tls_private_key" "ca_key" {
 }
 
 resource "tls_self_signed_cert" "ca_cert" {
-  key_algorithm   = "RSA"
-  is_ca_certificate = true 
-  private_key_pem = tls_private_key.ca_key.private_key_pem
+  key_algorithm     = "RSA"
+  is_ca_certificate = true
+  private_key_pem   = tls_private_key.ca_key.private_key_pem
 
   subject {
-    common_name  = "Kubernetes"
-    organization = "Kubernetes"
+    common_name         = "Kubernetes"
+    organization        = "Kubernetes"
     organizational_unit = "CA"
-    country = var.country
-    locality = var.locality
-    province = var.province
+    country             = var.country
+    locality            = var.locality
+    province            = var.province
   }
 
   validity_period_hours = 8760
@@ -34,7 +34,7 @@ resource "tls_self_signed_cert" "ca_cert" {
 
 # Generate the admin client certificate and private ke
 resource "tls_private_key" "admin_key" {
-  algorithm   = "RSA"
+  algorithm = "RSA"
 }
 
 resource "tls_cert_request" "admin_csr" {
@@ -42,12 +42,12 @@ resource "tls_cert_request" "admin_csr" {
   private_key_pem = tls_private_key.admin_key.private_key_pem
 
   subject {
-    common_name  = "admin"
-    organization = "system:masters"
+    common_name         = "admin"
+    organization        = "system:masters"
     organizational_unit = "bootstrap-k8s-cluster"
-    country = var.country
-    locality = var.locality
-    province = var.province
+    country             = var.country
+    locality            = var.locality
+    province            = var.province
   }
 }
 
@@ -71,7 +71,7 @@ resource "tls_locally_signed_cert" "admin_cert" {
 resource "tls_private_key" "kubelet_key" {
   count = var.node_count
 
-  algorithm   = "RSA"
+  algorithm = "RSA"
 }
 
 resource "tls_cert_request" "kubelet_csrs" {
@@ -81,12 +81,12 @@ resource "tls_cert_request" "kubelet_csrs" {
   private_key_pem = tls_private_key.kubelet_key[count.index].private_key_pem
 
   subject {
-    common_name  = "system:node:${google_compute_instance.k8s-worker-node-pool[count.index].name}"
-    organization = "system:nodes"
+    common_name         = "system:node:${google_compute_instance.k8s-worker-node-pool[count.index].name}"
+    organization        = "system:nodes"
     organizational_unit = "bootstrap-k8s-cluster"
-    country = var.country
-    locality = var.locality
-    province = var.province
+    country             = var.country
+    locality            = var.locality
+    province            = var.province
   }
 
   ip_addresses = [google_compute_instance.k8s-worker-node-pool[count.index].network_interface.0.network_ip, google_compute_instance.k8s-worker-node-pool[count.index].network_interface.0.access_config.0.nat_ip]
@@ -114,7 +114,7 @@ resource "tls_locally_signed_cert" "kubelet_certs" {
 
 # Generate the kube-controller-manager client certificate and private key
 resource "tls_private_key" "kube_controller_manager_key" {
-  algorithm   = "RSA"
+  algorithm = "RSA"
 }
 
 resource "tls_cert_request" "kube_controller_manager_csr" {
@@ -122,12 +122,12 @@ resource "tls_cert_request" "kube_controller_manager_csr" {
   private_key_pem = tls_private_key.kube_controller_manager_key.private_key_pem
 
   subject {
-    common_name  = "system:kube-controller-manager"
-    organization = "system:kube-controller-manager"
+    common_name         = "system:kube-controller-manager"
+    organization        = "system:kube-controller-manager"
     organizational_unit = "bootstrap-k8s-cluster"
-    country = var.country
-    locality = var.locality
-    province = var.province
+    country             = var.country
+    locality            = var.locality
+    province            = var.province
   }
 }
 
@@ -149,7 +149,7 @@ resource "tls_locally_signed_cert" "kube_controller_manager_cert" {
 
 # Generate the kube-proxy client certificate and private key
 resource "tls_private_key" "kube_proxy_key" {
-  algorithm   = "RSA"
+  algorithm = "RSA"
 }
 
 resource "tls_cert_request" "kube_proxy_csr" {
@@ -157,12 +157,12 @@ resource "tls_cert_request" "kube_proxy_csr" {
   private_key_pem = tls_private_key.kube_proxy_key.private_key_pem
 
   subject {
-    common_name  = "system:kube-proxy"
-    organization = "system:kube-proxy"
+    common_name         = "system:kube-proxy"
+    organization        = "system:kube-proxy"
     organizational_unit = "bootstrap-k8s-cluster"
-    country = var.country
-    locality = var.locality
-    province = var.province
+    country             = var.country
+    locality            = var.locality
+    province            = var.province
   }
 }
 
@@ -184,7 +184,7 @@ resource "tls_locally_signed_cert" "kube_proxy_cert" {
 
 # Generate the kube-scheduler client certificate and private key
 resource "tls_private_key" "kube_scheduler_key" {
-  algorithm   = "RSA"
+  algorithm = "RSA"
 }
 
 resource "tls_cert_request" "kube_scheduler_csr" {
@@ -192,12 +192,12 @@ resource "tls_cert_request" "kube_scheduler_csr" {
   private_key_pem = tls_private_key.kube_scheduler_key.private_key_pem
 
   subject {
-    common_name  = "system:kube-scheduler"
-    organization = "system:kube-scheduler"
+    common_name         = "system:kube-scheduler"
+    organization        = "system:kube-scheduler"
     organizational_unit = "bootstrap-k8s-cluster"
-    country = var.country
-    locality = var.locality
-    province = var.province
+    country             = var.country
+    locality            = var.locality
+    province            = var.province
   }
 }
 
@@ -219,7 +219,7 @@ resource "tls_locally_signed_cert" "kube_scheduler_cert" {
 
 # Generate the Kubernetes API Server certificate and private key
 resource "tls_private_key" "kubernetes_api_key" {
-  algorithm   = "RSA"
+  algorithm = "RSA"
 }
 
 resource "tls_cert_request" "kubernetes_api_csr" {
@@ -227,12 +227,12 @@ resource "tls_cert_request" "kubernetes_api_csr" {
   private_key_pem = tls_private_key.kubernetes_api_key.private_key_pem
 
   subject {
-    common_name  = "kubernetes"
-    organization = "Kubernetes"
+    common_name         = "kubernetes"
+    organization        = "Kubernetes"
     organizational_unit = "bootstrap-k8s-cluster"
-    country = var.country
-    locality = var.locality
-    province = var.province
+    country             = var.country
+    locality            = var.locality
+    province            = var.province
   }
 
   ip_addresses = [
@@ -264,7 +264,7 @@ resource "tls_locally_signed_cert" "kubernetes_api_cert" {
 
 # Generate the service-account certificate and private key
 resource "tls_private_key" "service_account_key" {
-  algorithm   = "RSA"
+  algorithm = "RSA"
 }
 
 resource "tls_cert_request" "service_account_csr" {
@@ -272,12 +272,12 @@ resource "tls_cert_request" "service_account_csr" {
   private_key_pem = tls_private_key.service_account_key.private_key_pem
 
   subject {
-    common_name  = "service-accounts"
-    organization = "Kubernetes"
+    common_name         = "service-accounts"
+    organization        = "Kubernetes"
     organizational_unit = "bootstrap-k8s-cluster"
-    country = var.country
-    locality = var.locality
-    province = var.province
+    country             = var.country
+    locality            = var.locality
+    province            = var.province
   }
 }
 
@@ -299,7 +299,7 @@ resource "tls_locally_signed_cert" "service_account_cert" {
 
 
 # Copy the appropriate certificates and private keys to worker and controller instances
-resource "null_resource" "transfer_certs_and_keys" {  
+resource "null_resource" "transfer_certs_and_keys" {
   count = var.node_count
 
   triggers = {
